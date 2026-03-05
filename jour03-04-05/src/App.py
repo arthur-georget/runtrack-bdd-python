@@ -1,18 +1,26 @@
 from src.DataBase import DataBase
 from src.Category import Category
 from src.Product import Product
+import customtkinter
 
+customtkinter.set_appearance_mode("System")
+customtkinter.set_default_color_theme("blue")
 
-class Menu:
+class App(customtkinter.CTk):
 
-    def __init__(self, database: DataBase):
-        self.__database = database
+    def __init__(self, *args, **kwargs):
+        customtkinter.CTk.__init__(self, *args, **kwargs)
+        self.title("Gestionnaire de stock")
+        self.geometry("800x600")
+        self.__database = DataBase()
+        self.__database.init_store()
         self.__products = self.__instantiate_products()
         self.__categories = self.__instantiate_categories()
+        self.protocol("WM_DELETE_WINDOW", self.__database.connection.close())
         print('''
 Bienvenue dans l'interface d'administration du magasin.''')
 
-    
+
     def __instantiate_products(self) -> list[Product]:
 
         local_cursor = self.__database.connection.cursor()
