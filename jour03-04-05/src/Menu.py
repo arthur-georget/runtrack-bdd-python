@@ -7,10 +7,40 @@ class Menu:
 
     def __init__(self, database: DataBase):
         self.__database = database
-        self.__products = database.instantiate_product()
-        self.__categories = database.instantiate_category()
-        print("Bienvenue dans l'interface d'administration du magasin.")
+        self.__products = self.__instantiate_products()
+        self.__categories = self.__instantiate_categories()
+        print('''
+Bienvenue dans l'interface d'administration du magasin.''')
+
     
+    def __instantiate_products(self) -> list[Product]:
+
+        local_cursor = self.__database.connection.cursor()
+        local_cursor.execute("USE store;")
+        local_cursor.execute("SELECT id FROM product;")
+        products = local_cursor.fetchall()
+        products_instance_list = []
+        for product in products:
+            product_instance = Product(self.__database)
+            product_instance.read(product[0])
+            products_instance_list.append(product_instance)
+        local_cursor.close()
+        return products_instance_list
+
+
+    def __instantiate_categories(self) -> list[Category]:
+
+        local_cursor = self.__database.connection.cursor()
+        local_cursor.execute("USE store;")
+        local_cursor.execute("SELECT id FROM category;")
+        categories = local_cursor.fetchall()
+        categories_instance_list = []
+        for category in categories:
+            category_instance = Category(self.__database)
+            category_instance.read(category[0])
+            categories_instance_list.append(category_instance)
+        local_cursor.close()
+        return categories_instance_list
 
     def main_menu(self):
 
@@ -21,7 +51,8 @@ class Menu:
 Que voulez vous faire?
 1 - Gérer les produits
 2 - Gérer les categories
-3 - Quitter''')
+3 - Quitter
+''')
         
             while True:
                 user_input = input("Veuillez sélectionner une option (1-3): ")
@@ -52,8 +83,7 @@ Que voulez vous faire?
 1 - Ajouter un produit
 2 - Supprimer un produit
 3 - Modifier un produit
-4 - Afficher l'ensemble des produits
-              
+4 - Afficher l'ensemble des produits         
 ''')
         while True:
             user_input = input("Veuillez sélectionner une option (0-4): ")
@@ -220,7 +250,7 @@ Que voulez vous faire?
                         break
                     except:
                         print("Vous n'avez pas renseigné un chiffre.")
-
+                        
 
     def __category_menu(self):
         print('''
@@ -231,7 +261,6 @@ Que voulez vous faire?
 2 - Supprimer une categorie
 3 - Modifier une categorie
 4 - Afficher les produits par categorie
-
 ''')
         while True:
             user_input = input("Veuillez sélectionner une option (0-4): ")
@@ -326,7 +355,6 @@ Nom: {category.get_name()}
 Que voulez vous faire?
 0 - Retour
 1 - Modifier son nom
-
 ''')
         while True:
             user_input = input("Veuillez sélectionner une option (0-1): ")
@@ -350,7 +378,7 @@ Que voulez vous faire?
 
         print('''
 -------- Produits par categorie --------
-              ''')
+''')
         self.__print_available_categories_ids()
         id_found = False
         while not id_found:
