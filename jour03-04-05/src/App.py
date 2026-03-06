@@ -1,6 +1,7 @@
 from src.DataBase import DataBase
 from src.Category import Category
 from src.Product import Product
+from src.ProductsFrame import ProductsFrame
 import customtkinter
 
 customtkinter.set_appearance_mode("System")
@@ -9,6 +10,7 @@ customtkinter.set_default_color_theme("blue")
 class App(customtkinter.CTk):
 
     def __init__(self, *args, **kwargs):
+
         customtkinter.CTk.__init__(self, *args, **kwargs)
         self.title("Gestionnaire de stock")
         self.geometry("800x600")
@@ -16,10 +18,43 @@ class App(customtkinter.CTk):
         self.__database.init_store()
         self.__products = self.__instantiate_products()
         self.__categories = self.__instantiate_categories()
+
+        ########## CTk FRAMES #############
+        self.columnconfigure(0, weight=50)
+        self.columnconfigure(1, weight=80)
+        self.columnconfigure(2, weight=80)
+        self.columnconfigure(3, weight=80)
+        self.columnconfigure(4, weight=80)
+        self.columnconfigure(5, weight=80)
+        self.columnconfigure(6, weight=80)
+        self.columnconfigure(7, weight=80)
+
+        filter_product_button = customtkinter.CTkButton(self, text="Filtrer", command=self.__product_add_menu)
+        filter_product_button.grid(row=0, column=1, sticky="W", pady=5)
+
+        product_frames = ProductsFrame(self, title="Liste complète des produits en stock", width=500, height=400)
+        product_frames.grid(row=1, column=1, columnspan=5, sticky="W", pady=5)
+
+        add_product_button = customtkinter.CTkButton(self, text="Ajouter", command=self.__product_add_menu)
+        add_product_button.grid(row=2, column=1, sticky="W", pady=5, padx=5)
+
+        modify_product_button = customtkinter.CTkButton(self, text="Modifier", command=self.__product_modify_menu)
+        modify_product_button.grid(row=2, column=2, sticky="W", pady=5)
+
+        remove_product_button = customtkinter.CTkButton(self, text="Supprimer", command=self.__product_remove_menu)
+        remove_product_button.grid(row=2, column=3, sticky="W", pady=5)
+
+        ########## CLOSE DATABASE WHEN EXITING ###########
         self.protocol("WM_DELETE_WINDOW", self.__database.connection.close())
+
         print('''
 Bienvenue dans l'interface d'administration du magasin.''')
 
+    def get_products(self):
+        return self.__products
+    
+    def get_categories(self):
+        return self.__categories
 
     def __instantiate_products(self) -> list[Product]:
 

@@ -29,7 +29,7 @@ class DataBase:
         except:
             print("Table 'category' trouvée.")
         try:
-            local_cursor.execute("CREATE TABLE product (id INT NOT NULL AUTO_INCREMENT, name VARCHAR(255), description VARCHAR(255), price INT, quantity INT, id_category INT NOT NULL, PRIMARY KEY(id), FOREIGN KEY (id_category) REFERENCES category(id));")
+            local_cursor.execute("CREATE TABLE product (id INT NOT NULL AUTO_INCREMENT, name VARCHAR(255), description VARCHAR(255), price INT, quantity INT, id_category INT NOT NULL, PRIMARY KEY(id), FOREIGN KEY (id_category) REFERENCES category(id) ON DELETE CASCADE);")
             print("La table 'product a été créée.'")
         except:
             print("Table 'product' trouvée.")
