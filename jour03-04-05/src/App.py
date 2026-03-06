@@ -2,7 +2,8 @@ from src.DataBase import DataBase
 from src.Category import Category
 from src.Product import Product
 from src.ProductsFrame import ProductsFrame
-import customtkinter
+import customtkinter 
+from CTkListbox import *
 
 customtkinter.set_appearance_mode("System")
 customtkinter.set_default_color_theme("blue")
@@ -12,8 +13,14 @@ class App(customtkinter.CTk):
     def __init__(self, *args, **kwargs):
 
         customtkinter.CTk.__init__(self, *args, **kwargs)
+
         self.title("Gestionnaire de stock")
         self.geometry("800x600")
+        self.__database = DataBase()
+
+        ########## CLOSE DATABASE WHEN EXITING ###########
+        self.protocol("WM_DELETE_WINDOW", self.__database.connection.close())
+
         self.__database = DataBase()
         self.__database.init_store()
         self.__products = self.__instantiate_products()
@@ -29,23 +36,19 @@ class App(customtkinter.CTk):
         self.columnconfigure(6, weight=80)
         self.columnconfigure(7, weight=80)
 
-        filter_product_button = customtkinter.CTkButton(self, text="Filtrer", command=self.__product_add_menu)
-        filter_product_button.grid(row=0, column=1, sticky="W", pady=5)
+        filter_category_select_box = CTkListbox(self, height=15,command=self.__change_products_to_display_by_category)
+        filter_category_select_box.pack(fill="both", expand=True, padx=5, pady=5)
+        filter_category_select_box.insert(0, "Tous les produits")
+        for i,category in enumerate(self.__categories):
+            filter_category_select_box.insert(i+1, f"{category.get_name()}")
 
-        product_frames = ProductsFrame(self, title="Liste complète des produits en stock", width=500, height=400)
+        filter_category_select_box.grid(row=0, column=1, sticky="W", pady=5)
+
+        product_frames = ProductsFrame(self, title="Produits en stock", width=500, height=400)
         product_frames.grid(row=1, column=1, columnspan=5, sticky="W", pady=5)
 
         add_product_button = customtkinter.CTkButton(self, text="Ajouter", command=self.__product_add_menu)
         add_product_button.grid(row=2, column=1, sticky="W", pady=5, padx=5)
-
-        modify_product_button = customtkinter.CTkButton(self, text="Modifier", command=self.__product_modify_menu)
-        modify_product_button.grid(row=2, column=2, sticky="W", pady=5)
-
-        remove_product_button = customtkinter.CTkButton(self, text="Supprimer", command=self.__product_remove_menu)
-        remove_product_button.grid(row=2, column=3, sticky="W", pady=5)
-
-        ########## CLOSE DATABASE WHEN EXITING ###########
-        self.protocol("WM_DELETE_WINDOW", self.__database.connection.close())
 
         print('''
 Bienvenue dans l'interface d'administration du magasin.''')
@@ -465,4 +468,7 @@ Description: {product.get_description()}
 Prix: {product.get_price()}
 Quantité: {product.get_quantity()}
 =============================================               
-''')
+''')    
+            
+    def __change_products_to_display_by_category(self, category: str):
+        print(category)

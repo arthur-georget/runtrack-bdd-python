@@ -1,4 +1,5 @@
 import customtkinter
+from CTkListbox import CTkListbox
 
 class ProductsFrame(customtkinter.CTkScrollableFrame):
     def __init__(self, master, title, **kwargs):
@@ -13,7 +14,7 @@ class ProductsFrame(customtkinter.CTkScrollableFrame):
         self.columnconfigure(2, weight=70)
         self.columnconfigure(3, weight=70)
         self.columnconfigure(4, weight=110)
-
+        
         for i,product in enumerate(self.__products):
             name = customtkinter.CTkLabel(self, text=product.get_name(), font=("Arial", 12, "bold"))
             name.grid(row=i, column=0, sticky="W", ipadx=10, ipady=5)
