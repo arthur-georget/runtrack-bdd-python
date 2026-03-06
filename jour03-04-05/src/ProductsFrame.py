@@ -1,5 +1,5 @@
 import customtkinter
-from CTkListbox import CTkListbox
+from functools import partial
 
 class ProductsFrame(customtkinter.CTkScrollableFrame):
     def __init__(self, master, title, **kwargs):
@@ -9,20 +9,27 @@ class ProductsFrame(customtkinter.CTkScrollableFrame):
         self.__categories = master.get_categories()
 
         # add widgets onto the frame...
-        self.columnconfigure(0, weight=125)
-        self.columnconfigure(1, weight=125)
-        self.columnconfigure(2, weight=70)
-        self.columnconfigure(3, weight=70)
-        self.columnconfigure(4, weight=110)
+        self.columnconfigure(0, weight=1)
+        self.columnconfigure(1, weight=5)
+        self.columnconfigure(2, weight=5)
+        self.columnconfigure(3, weight=2)
+        self.columnconfigure(4, weight=2)
+        self.columnconfigure(5, weight=1)
         
         for i,product in enumerate(self.__products):
+            id = customtkinter.CTkButton(self, text=product.get_id(), command=partial(self.__product_action,product.get_id()), width=20)
+            id.grid(row=i, column=0, sticky="W", ipadx=10, ipady=5)
             name = customtkinter.CTkLabel(self, text=product.get_name(), font=("Arial", 12, "bold"))
-            name.grid(row=i, column=0, sticky="W", ipadx=10, ipady=5)
+            name.grid(row=i, column=1, sticky="W", ipadx=10, ipady=5)
             description = customtkinter.CTkLabel(self, text=product.get_description(), font=("Arial", 12, "bold"))
-            description.grid(row=i, column=1, sticky="W", ipadx=10, ipady=5)
+            description.grid(row=i, column=2, sticky="W", ipadx=10, ipady=5)
             price = customtkinter.CTkLabel(self, text=product.get_price(), font=("Arial", 12, "bold"))
-            price.grid(row=i, column=2, sticky="W", ipadx=10, ipady=5)
+            price.grid(row=i, column=3, sticky="W", ipadx=10, ipady=5)
             quantity = customtkinter.CTkLabel(self, text=product.get_quantity(), font=("Arial", 12, "bold"))
-            quantity.grid(row=i, column=3, sticky="W", ipadx=10, ipady=5)
+            quantity.grid(row=i, column=4, sticky="W", ipadx=10, ipady=5)
             category = customtkinter.CTkLabel(self, text=product.get_id_category(), font=("Arial", 12, "bold"))
-            category.grid(row=i, column=4, sticky="W", ipadx=10, ipady=5)
+            category.grid(row=i, column=5, sticky="W", ipadx=10, ipady=5)
+
+    def __product_action(self, id):
+        pass
+        print(id)
