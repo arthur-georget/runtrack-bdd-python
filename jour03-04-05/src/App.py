@@ -2,6 +2,7 @@ from src.DataBase import DataBase
 from src.Category import Category
 from src.Product import Product
 from src.ProductsFrame import ProductsFrame
+from src.CategoriesFilterFrame import CategoriesFilterFrame
 import customtkinter
 
 customtkinter.set_appearance_mode("System")
@@ -35,16 +36,10 @@ class App(customtkinter.CTk):
         self.columnconfigure(6, weight=80)
         self.columnconfigure(7, weight=80)
 
+        categories_filter_frame = CategoriesFilterFrame(self, title="Filtrer", width=100, height=35)
+        categories_filter_frame.grid(row=0, column=1, sticky="W", pady=5)
 
-        #filter_category_select_box = CTkListbox(self, height=15,command=self.__change_products_to_display_by_category)
-        #filter_category_select_box.pack(fill="both", expand=True, padx=5, pady=5)
-        #filter_category_select_box.insert(0, "Tous les produits")
-        #for i,category in enumerate(self.__categories):
-        #    filter_category_select_box.insert(i+1, f"{category.get_name()}")
-
-        #filter_category_select_box.grid(row=0, column=1, sticky="W", pady=5)
-
-        products_frame = ProductsFrame(self, title="Produits en stock", width=500, height=400)
+        products_frame = ProductsFrame(self, title="Produits en stock", width=500)
         products_frame.grid(row=1, column=1, columnspan=5, sticky="W", pady=5)
 
         add_product_button = customtkinter.CTkButton(self, text="Ajouter", command=self.__product_add_menu)
