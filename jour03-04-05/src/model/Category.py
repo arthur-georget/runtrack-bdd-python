@@ -1,4 +1,4 @@
-from src.DataBase import DataBase
+from src.model.DataBase import DataBase
 
 
 class Category:

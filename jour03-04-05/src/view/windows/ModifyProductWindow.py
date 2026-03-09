@@ -1,9 +1,10 @@
 import customtkinter
-from src.Product import Product
+from src.model.Product import Product
+from src.view.windows.ConfirmDeleteProductWindow import ConfirmDeleteProductWindow
 
 class ModifyProductWindow(customtkinter.CTkToplevel):
 
-    def __init__(self, *args, product ,fg_color = None, **kwargs):
+    def __init__(self, *args, product: Product ,fg_color = None, **kwargs):
         customtkinter.CTkToplevel.__init__(self, *args, fg_color=fg_color, **kwargs)
         self.__product = product
 
@@ -34,6 +35,8 @@ class ModifyProductWindow(customtkinter.CTkToplevel):
         self.__quantity.grid(row=4, column=2, sticky="W", padx=10, pady=5)
         self.__category = customtkinter.CTkLabel(self, text=self.__product.get_id_category(), font=("Arial", 12, "bold"))
         self.__category.grid(row=5, column=2, sticky="W", padx=10, pady=5)
+
+        self.__delete_confirm_dialog = None
 
         self.after(100,self.focus)
 
@@ -75,4 +78,8 @@ class ModifyProductWindow(customtkinter.CTkToplevel):
             self.master.update_products_frame()
 
     def __delete_product_dialog(self):
-        pass
+        if self.__delete_confirm_dialog is None or not self.__delete_confirm_dialog.winfo_exists():
+            self.__delete_confirm_dialog = ConfirmDeleteProductWindow(self, product=self.__product)
+            self.destroy
+        else:
+            self.__delete_confirm_dialog.focus()
