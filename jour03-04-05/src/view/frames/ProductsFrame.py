@@ -1,12 +1,11 @@
 import customtkinter
 from src.view.windows.ModifyProductWindow import ModifyProductWindow
+from src.model.Product import Product
 from functools import partial
 
 class ProductsFrame(customtkinter.CTkScrollableFrame):
-    def __init__(self, master, title, **kwargs):
-        customtkinter.CTkScrollableFrame.__init__(self, master, label_text=title, **kwargs)
-
-        self.__products = master.get_products()
+    def __init__(self, master, products, title, **kwargs):
+        customtkinter.CTkScrollableFrame.__init__(self, master=master, label_text=title, **kwargs)
 
         # add widgets onto the frame...
         self.columnconfigure(0, weight=1)
@@ -18,24 +17,22 @@ class ProductsFrame(customtkinter.CTkScrollableFrame):
         
         self.__modify_product_window = None
 
-        self.update_products_frame()
+        self.update_frame(products)
         
-
 
     def __product_action(self, product):
 
         if self.__modify_product_window is None or not self.__modify_product_window.winfo_exists():
             self.__modify_product_window = ModifyProductWindow(self, product=product)
-    
         else:
             self.__modify_product_window.focus()
 
-    def update_products_frame(self):
-        
+    def update_frame(self, products: list[Product]):
+
         for widget in self.winfo_children():
             widget.destroy()
 
-        for i,product in enumerate(self.__products):
+        for i,product in enumerate(products):
             id = customtkinter.CTkButton(self, text=product.get_id(), command=partial(self.__product_action,product), width=20)
             id.grid(row=i, column=0, sticky="W", ipadx=10, ipady=5)
             name = customtkinter.CTkLabel(self, text=product.get_name(), font=("Arial", 12, "bold"))

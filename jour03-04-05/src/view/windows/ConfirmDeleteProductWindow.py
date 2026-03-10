@@ -3,10 +3,10 @@ from src.model.Product import Product
 
 class ConfirmDeleteProductWindow(customtkinter.CTkToplevel):
 
-    def __init__(self, *args, product: Product ,fg_color = None, **kwargs):
-        customtkinter.CTkToplevel.__init__(self, *args, fg_color=fg_color, **kwargs)
+    def __init__(self, master, product: Product ,fg_color = None, **kwargs):
+        customtkinter.CTkToplevel.__init__(self, master=master, fg_color=fg_color, **kwargs)
         self.__product = product
-
+        self.__master = master
         self.geometry("550x100")
         self.label = customtkinter.CTkLabel(self, text=f"Voulez vous vraiment supprimer '{product.get_name()}'?", font=("Arial", 15, "bold"))
         self.label.grid(row=0, column=0, columnspan=3 ,sticky="W", padx=10, pady=5)
@@ -24,4 +24,4 @@ class ConfirmDeleteProductWindow(customtkinter.CTkToplevel):
     def __delete_product(self):
 
         self.__product.delete()
-        self.destroy()
+        self.master.destroy()

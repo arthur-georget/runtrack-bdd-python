@@ -48,6 +48,5 @@ class AddProductInputDialog(customtkinter.CTkToplevel):
                            self.__price_entry.get(),
                            self.__quantity_entry.get(),
                            self.__category_entry.get())
-        
         self.destroy()
     

@@ -4,6 +4,7 @@ from src.model.Product import Product
 from src.view.frames.ProductsFrame import ProductsFrame
 from src.view.frames.CategoriesFilterFrame import CategoriesFilterFrame
 from src.view.windows.AddProductInputDialog import AddProductInputDialog
+from functools import partial
 import customtkinter
 
 customtkinter.set_appearance_mode("System")
@@ -24,8 +25,8 @@ class App(customtkinter.CTk):
 
         self.__database = DataBase()
         self.__database.init_store()
-        self.__products = self.__instantiate_products()
-        self.__categories = self.__instantiate_categories()
+        self.__instantiate_products()
+        self.__instantiate_categories()
 
         ########## CTk FRAMES #############
         self.columnconfigure(0, weight=50)
@@ -40,10 +41,11 @@ class App(customtkinter.CTk):
         categories_filter_frame = CategoriesFilterFrame(self, title="Filtrer", width=100, height=35)
         categories_filter_frame.grid(row=0, column=1, sticky="W", pady=5)
 
-        products_frame = ProductsFrame(self, title="Produits en stock", width=500)
-        products_frame.grid(row=1, column=1, columnspan=5, sticky="W", pady=5)
+        self.__products_frame = ProductsFrame(self, self.__products, title="Produits en stock", width=500)
+        self.__products_frame.grid(row=1, column=1, columnspan=5, sticky="W", pady=5)
+        self.__products_frame.bind('<Destroy>',self.__update_product_frame)
 
-        add_product_button = customtkinter.CTkButton(self, text="Ajouter", command=self.__product_add_menu)
+        add_product_button = customtkinter.CTkButton(self, text="Ajouter", command=self.__call_add_product_window)
         add_product_button.grid(row=2, column=1, sticky="W", pady=5, padx=5)
 
         print('''
@@ -67,7 +69,7 @@ Bienvenue dans l'interface d'administration du magasin.''')
             product_instance.read(product[0])
             products_instance_list.append(product_instance)
         local_cursor.close()
-        return products_instance_list
+        self.__products =  products_instance_list
 
 
     def __instantiate_categories(self) -> list[Category]:
@@ -82,8 +84,15 @@ Bienvenue dans l'interface d'administration du magasin.''')
             category_instance.read(category[0])
             categories_instance_list.append(category_instance)
         local_cursor.close()
-        return categories_instance_list
+        self.__categories = categories_instance_list
 
-    def __product_add_menu(self):
-        add_product_window = AddProductInputDialog(self, database = self.__database)
-        pass
+    def __call_add_product_window(self):
+        self.__add_product_window = AddProductInputDialog(self, database = self.__database)
+        self.__add_product_window.bind('<Destroy>',self.__update_product_frame)
+
+    def __update_product_frame(self,event):
+        if event.widget == event.widget.winfo_toplevel():
+            self.__instantiate_products()
+            self.__products_frame = ProductsFrame(self, self.__products, title="Produits en stock", width=500)
+            self.__products_frame.grid(row=1, column=1, columnspan=5, sticky="W", pady=5)
+            self.__products_frame.bind('<Destroy>',self.__update_product_frame)

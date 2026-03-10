@@ -46,28 +46,28 @@ class ModifyProductWindow(customtkinter.CTkToplevel):
         user_input = dialog.get_input()
         if user_input is not None:
             self.__product.update_name(user_input)
-            self.master.update_products_frame()
+            self.master.destroy()
 
     def __modify_product_description_dialog(self):
         dialog = customtkinter.CTkInputDialog(text="Nouvelle description:", title="Changer la description du produit")
         user_input = dialog.get_input()
         if user_input is not None:
             self.__product.update_description(user_input)
-            self.master.update_products_frame()
+            self.master.destroy()
 
     def __modify_product_price_dialog(self):
         dialog = customtkinter.CTkInputDialog(text="Nouveau prix:", title="Changer le prix du produit")
         user_input = dialog.get_input()
         if user_input is not None:
             self.__product.update_price(user_input)
-            self.master.update_products_frame()
+            self.master.destroy()
 
     def __modify_product_quantity_dialog(self):
         dialog = customtkinter.CTkInputDialog(text="Nouvelle quantité:", title="Changer la quantité de produit")
         user_input = dialog.get_input()
         if user_input is not None:
             self.__product.update_quantity(user_input)
-            self.master.update_products_frame()
+            self.master.destroy()
 
 
     def __modify_product_category_dialog(self):
@@ -75,11 +75,10 @@ class ModifyProductWindow(customtkinter.CTkToplevel):
         user_input = dialog.get_input()
         if user_input is not None:
             self.__product.update_category(user_input)
-            self.master.update_products_frame()
+            self.master.destroy()
 
     def __delete_product_dialog(self):
         if self.__delete_confirm_dialog is None or not self.__delete_confirm_dialog.winfo_exists():
             self.__delete_confirm_dialog = ConfirmDeleteProductWindow(self, product=self.__product)
-            self.destroy
         else:
             self.__delete_confirm_dialog.focus()
