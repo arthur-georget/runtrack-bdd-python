@@ -17,21 +17,6 @@ class ProductsFrame(customtkinter.CTkScrollableFrame):
         
         self.__modify_product_window = None
 
-        self.update_frame(products)
-        
-
-    def __product_action(self, product):
-
-        if self.__modify_product_window is None or not self.__modify_product_window.winfo_exists():
-            self.__modify_product_window = ModifyProductWindow(self, product=product)
-        else:
-            self.__modify_product_window.focus()
-
-    def update_frame(self, products: list[Product]):
-
-        for widget in self.winfo_children():
-            widget.destroy()
-
         for i,product in enumerate(products):
             id = customtkinter.CTkButton(self, text=product.get_id(), command=partial(self.__product_action,product), width=20)
             id.grid(row=i, column=0, sticky="W", ipadx=10, ipady=5)
@@ -45,3 +30,18 @@ class ProductsFrame(customtkinter.CTkScrollableFrame):
             quantity.grid(row=i, column=4, sticky="W", ipadx=10, ipady=5)
             category = customtkinter.CTkLabel(self, text=product.get_id_category(), font=("Arial", 12, "bold"))
             category.grid(row=i, column=5, sticky="W", ipadx=10, ipady=5)
+        
+
+    def __product_action(self, product):
+
+        if self.__modify_product_window is None or not self.__modify_product_window.winfo_exists():
+            self.__modify_product_window = ModifyProductWindow(self, product=product)
+            self.__modify_product_window.bind('<Destroy>',self.__call_self_destroy)
+        else:
+            self.__modify_product_window.focus()
+        
+
+    def __call_self_destroy(self,event):
+        if event.widget == event.widget.winfo_toplevel():
+            print("Destroying ProductFrame")
+            self.destroy()

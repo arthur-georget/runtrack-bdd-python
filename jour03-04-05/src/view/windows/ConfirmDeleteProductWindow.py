@@ -24,4 +24,5 @@ class ConfirmDeleteProductWindow(customtkinter.CTkToplevel):
     def __delete_product(self):
 
         self.__product.delete()
-        self.master.destroy()
+        print("Destroying ConfirmDeleteProductWindow")
+        self.destroy()

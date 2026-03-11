@@ -43,13 +43,10 @@ class App(customtkinter.CTk):
 
         self.__products_frame = ProductsFrame(self, self.__products, title="Produits en stock", width=500)
         self.__products_frame.grid(row=1, column=1, columnspan=5, sticky="W", pady=5)
-        self.__products_frame.bind('<Destroy>',self.__update_product_frame)
+        self.bind('<FocusIn>',self.__instantiate_product_frame)
 
         add_product_button = customtkinter.CTkButton(self, text="Ajouter", command=self.__call_add_product_window)
         add_product_button.grid(row=2, column=1, sticky="W", pady=5, padx=5)
-
-        print('''
-Bienvenue dans l'interface d'administration du magasin.''')
 
     def get_products(self):
         return self.__products
@@ -59,6 +56,7 @@ Bienvenue dans l'interface d'administration du magasin.''')
 
     def __instantiate_products(self) -> list[Product]:
 
+        self.__database.connection
         local_cursor = self.__database.connection.cursor()
         local_cursor.execute("USE store;")
         local_cursor.execute("SELECT id FROM product;")
@@ -88,11 +86,11 @@ Bienvenue dans l'interface d'administration du magasin.''')
 
     def __call_add_product_window(self):
         self.__add_product_window = AddProductInputDialog(self, database = self.__database)
-        self.__add_product_window.bind('<Destroy>',self.__update_product_frame)
+        self.__add_product_window.bind('<Destroy>',self.__instantiate_product_frame)
 
-    def __update_product_frame(self,event):
+    def __instantiate_product_frame(self,event):
         if event.widget == event.widget.winfo_toplevel():
+            print("Instantiating ProductFrame")
             self.__instantiate_products()
             self.__products_frame = ProductsFrame(self, self.__products, title="Produits en stock", width=500)
             self.__products_frame.grid(row=1, column=1, columnspan=5, sticky="W", pady=5)
-            self.__products_frame.bind('<Destroy>',self.__update_product_frame)
