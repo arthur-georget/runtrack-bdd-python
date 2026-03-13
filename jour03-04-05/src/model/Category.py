@@ -57,22 +57,3 @@ class Category:
         local_cursor.execute(f"DELETE FROM category WHERE id = {id}")
         self.__database.connection.commit()
         local_cursor.close()
-
-
-    def print_products_infos_by_category(self):
-        
-        local_cursor = self.__database.connection.cursor()
-        local_cursor.execute(f"SELECT * FROM product WHERE id_category = {self.__id};")
-        print(f"Dans la category n° {self.__id} il y a:")
-        for product in local_cursor:
-            print(f'''
-=============================================
-Id: {product[0]}
-Nom: {product[1]}
-Description: {product[2]}
-Prix: {product[3]}
-Quantité: {product[4]}
-=============================================               
-''')
-        
-        local_cursor.close()

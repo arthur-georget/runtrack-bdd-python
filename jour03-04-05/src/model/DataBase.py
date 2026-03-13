@@ -19,19 +19,19 @@ class DataBase:
         local_cursor = self.connection.cursor()
         try:
             local_cursor.execute("CREATE DATABASE store;")
-            print("Base de donnée 'store' créée.")
+            print("'store' database created.")
         except:
-            print("Base de donnée 'store' trouvée.")
+            print("'store' database found.")
         local_cursor.execute("USE store;")
         try:
             local_cursor.execute("CREATE TABLE category (id INT PRIMARY KEY NOT NULL AUTO_INCREMENT, name VARCHAR(255));")
-            print("La table 'category' a été créée.")
+            print("'category' table created.")
         except:
-            print("Table 'category' trouvée.")
+            print("'category' table found.")
         try:
             local_cursor.execute("CREATE TABLE product (id INT NOT NULL AUTO_INCREMENT, name VARCHAR(255), description VARCHAR(255), price INT, quantity INT, id_category INT NOT NULL, PRIMARY KEY(id), FOREIGN KEY (id_category) REFERENCES category(id) ON DELETE CASCADE);")
-            print("La table 'product a été créée.'")
+            print("'product' table created.")
         except:
-            print("Table 'product' trouvée.")
+            print("'product' table found.")
         self.connection.commit()
         local_cursor.close()
