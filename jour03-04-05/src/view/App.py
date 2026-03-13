@@ -22,9 +22,8 @@ class App(customtkinter.CTk):
         self.__database = DataBase()
 
         ########## CLOSE DATABASE WHEN EXITING ###########
-        self.protocol("WM_DELETE_WINDOW", self.__database.connection.close())
+        self.protocol("WM_DELETE_WINDOW", self.__close_database_n_quit_application)
 
-        self.__database = DataBase()
         self.__database.init_store()
         self.__instantiate_products()
         self.__instantiate_categories()
@@ -128,3 +127,7 @@ class App(customtkinter.CTk):
             self.__instantiate_categories()
             self.__categories_frame = CategoriesFrame(self, self.__categories, title="Catégories", width=150)
             self.__categories_frame.grid(row=1, column=7, columnspan=3, sticky="E", pady=5, padx=10)
+
+    def __close_database_n_quit_application(self):
+        self.__database.connection.close()
+        self.destroy()
