@@ -74,7 +74,7 @@ class ModifyProductWindow(customtkinter.CTkToplevel):
         dialog = customtkinter.CTkInputDialog(text="Nouvelle catégorie:", title="Changer la catégorie du produit")
         user_input = dialog.get_input()
         if user_input is not None:
-            self.__product.update_category(user_input)
+            self.__product.update_id_category(user_input)
             self.destroy()
 
     def __delete_product_dialog(self):
