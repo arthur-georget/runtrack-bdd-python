@@ -14,7 +14,12 @@ class CategoriesFilterFrame(customtkinter.CTkScrollableFrame):
             name = customtkinter.CTkButton(self, text=category.get_name(), command=partial(self.__category_action,category.get_id()), width=20)
             name.grid(row=i, column=0, sticky="W", pady=5)
 
+        self.__selected_id = None
+
 
     def __category_action(self, id):
-        
-        print(id)
+        self.__selected_id = id
+
+    
+    def get_selected_id(self):
+        return self.__selected_id

@@ -25,6 +25,7 @@ class App(customtkinter.CTk):
         self.protocol("WM_DELETE_WINDOW", self.__close_database_n_quit_application)
 
         self.__database.init_store()
+
         self.__instantiate_products()
         self.__instantiate_categories()
 
@@ -37,8 +38,8 @@ class App(customtkinter.CTk):
         self.columnconfigure(6, weight=80)
         self.columnconfigure(7, weight=80)
 
-        categories_filter_frame = CategoriesFilterFrame(self, self.__categories, title="Filtrer", width=100, height=35)
-        categories_filter_frame.grid(row=0, column=1, sticky="W", pady=5)
+        self.__categories_filter_frame = CategoriesFilterFrame(self, self.__categories, title="Filtrer", width=100, height=35)
+        self.__categories_filter_frame.grid(row=0, column=1, sticky="W", pady=5)
 
         self.__products_frame = ProductsFrame(self, self.__products, title="Produits en stock", width=500)
         self.__products_frame.grid(row=1, column=1, columnspan=5, sticky="W", pady=5)
@@ -120,6 +121,10 @@ class App(customtkinter.CTk):
         if event.widget == event.widget.winfo_toplevel():
             print("Instantiating main window frames")
             
+            self.__selected_category_id = self.__categories_filter_frame.get_selected_id()
+
+            print(self.__selected_category_id)
+
             self.__instantiate_products()
             self.__products_frame = ProductsFrame(self, self.__products, title="Produits en stock", width=500)
             self.__products_frame.grid(row=1, column=1, columnspan=5, sticky="W", pady=5)
