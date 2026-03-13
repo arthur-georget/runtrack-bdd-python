@@ -4,7 +4,6 @@ from src.model.Product import Product
 from src.view.frames.ProductsFrame import ProductsFrame
 from src.view.frames.CategoriesFilterFrame import CategoriesFilterFrame
 from src.view.windows.AddProductInputDialog import AddProductInputDialog
-from functools import partial
 import customtkinter
 
 customtkinter.set_appearance_mode("System")

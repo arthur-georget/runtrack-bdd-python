@@ -1,6 +1,5 @@
 import customtkinter
 from src.view.windows.ModifyProductWindow import ModifyProductWindow
-from src.model.Product import Product
 from functools import partial
 
 class ProductsFrame(customtkinter.CTkScrollableFrame):
