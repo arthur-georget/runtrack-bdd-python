@@ -43,7 +43,7 @@ class Category:
     def update_name(self, name: int):
 
         local_cursor = self.__database.connection.cursor()
-        local_cursor.execute(f"UPDATE category SET name = {name} WHERE id = {self.__id};")
+        local_cursor.execute(f"UPDATE category SET name = '{name}' WHERE id = {self.__id};")
         self.__name = name
         self.__database.connection.commit()
         local_cursor.close()

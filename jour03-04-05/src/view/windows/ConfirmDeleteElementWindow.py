@@ -4,7 +4,7 @@ from src.model.Product import Product
 
 class ConfirmDeleteElementWindow(customtkinter.CTkToplevel):
 
-    def __init__(self, master, element: Category | Product ,fg_color = None, **kwargs):
+    def __init__(self, master, element: Category | Product, fg_color = None, **kwargs):
         customtkinter.CTkToplevel.__init__(self, master=master, fg_color=fg_color, **kwargs)
         self.__element = element
         self.geometry("550x100")
