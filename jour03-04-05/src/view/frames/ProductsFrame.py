@@ -1,12 +1,15 @@
 import customtkinter
 from src.view.windows.ModifyProductWindow import ModifyProductWindow
 from functools import partial
+from src.model.Product import Product
+
 
 class ProductsFrame(customtkinter.CTkScrollableFrame):
-    def __init__(self, master, products, title, **kwargs):
+
+    def __init__(self, master, products: list[Product], title, **kwargs):
+
         customtkinter.CTkScrollableFrame.__init__(self, master=master, label_text=title, **kwargs)
 
-        # add widgets onto the frame...
         self.columnconfigure(0, weight=1)
         self.columnconfigure(1, weight=5)
         self.columnconfigure(2, weight=5)
@@ -36,11 +39,13 @@ class ProductsFrame(customtkinter.CTkScrollableFrame):
         if self.__modify_product_window is None or not self.__modify_product_window.winfo_exists():
             self.__modify_product_window = ModifyProductWindow(self, product=product)
             self.__modify_product_window.bind('<Destroy>',self.__call_self_destroy)
+
         else:
             self.__modify_product_window.focus()
         
 
     def __call_self_destroy(self,event):
+
         if event.widget == event.widget.winfo_toplevel():
             print("Destroying ProductFrame")
             self.destroy()

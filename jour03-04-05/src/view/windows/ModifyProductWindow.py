@@ -1,6 +1,6 @@
 import customtkinter
 from src.model.Product import Product
-from src.view.windows.ConfirmDeleteProductWindow import ConfirmDeleteProductWindow
+from src.view.windows.ConfirmDeleteElementWindow import ConfirmDeleteElementWindow
 
 class ModifyProductWindow(customtkinter.CTkToplevel):
 
@@ -79,7 +79,7 @@ class ModifyProductWindow(customtkinter.CTkToplevel):
 
     def __delete_product_dialog(self):
         if self.__delete_confirm_dialog is None or not self.__delete_confirm_dialog.winfo_exists():
-            self.__delete_confirm_dialog = ConfirmDeleteProductWindow(self, product=self.__product)
+            self.__delete_confirm_dialog = ConfirmDeleteElementWindow(self, product=self.__product)
             self.__delete_confirm_dialog.bind('<Destroy>',self.__call_self_destroy)
         else:
             self.__delete_confirm_dialog.focus()
