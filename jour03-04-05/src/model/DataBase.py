@@ -7,9 +7,9 @@ class DataBase:
 
         self.connection = mysql.connector.connect(
             host="localhost",
-            port="33059",
-            user="arthur",
-            password="marth19"
+            port="3306",
+            user="user",
+            password="password"
             )
         print(self.connection)
 

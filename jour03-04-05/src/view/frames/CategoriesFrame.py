@@ -35,5 +35,4 @@ class CategoriesFrame(customtkinter.CTkScrollableFrame):
     def __call_self_destroy(self,event):
 
         if event.widget == event.widget.winfo_toplevel():
-            print("Destroying CategoryFrame")
             self.destroy()
